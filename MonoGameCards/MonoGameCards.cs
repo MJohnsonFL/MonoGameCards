@@ -163,9 +163,9 @@ namespace MonoGameCards
                     {
                         for (int c = PlayPiles[p].Cards.Count - 1; c >= 0; c--) // Looping through all Cards in each PlayPile starting at topmost and working backwards
                         {
-                            if (PlayPiles[p].Cards[c].CardRectangle.Contains(mousePoint))
+                            if (PlayPiles[p].Cards[c].isFaceDown == false && PlayPiles[p].Cards[c].CardRectangle.Contains(mousePoint))
                             {
-                                cardOffset = mousePosition - PlayPiles[p].TopCard.Position;
+                                cardOffset = mousePosition - PlayPiles[p].Cards[c].Position;
                                 for (int i = PlayPiles[p].Cards.Count - 1; i >= c; i--)
                                 {
                                     MyHand.AddFromDeck(PlayPiles[p].TakeTopCard(), PlayPiles[p]);
@@ -195,7 +195,7 @@ namespace MonoGameCards
             {
                 if (MyHand.IsEmpty == false)
                 {
-                    Point cardCorner = new Point((int)MyHand.TopCard.Position.X, (int)MyHand.TopCard.Position.Y);
+                    Point cardCorner = new Point((int)MyHand.Cards[0].Position.X, (int)MyHand.Cards[0].Position.Y);
 
                     foreach (AcePile acePile in AcePiles)
                     {
@@ -213,7 +213,7 @@ namespace MonoGameCards
 
                 if (MyHand.IsEmpty == false)
                 {
-                    Point cardCorner = new Point((int)MyHand.TopCard.Position.X, (int)MyHand.TopCard.Position.Y);
+                    Point cardCorner = new Point((int)MyHand.Cards[0].Position.X, (int)MyHand.Cards[0].Position.Y);
 
                     foreach (PlayPile playPile in PlayPiles)
                     {
