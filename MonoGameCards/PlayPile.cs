@@ -54,9 +54,9 @@ namespace MonoGameCards
                 }
                 return false;
             }
-            else if (card.Suit == Suit.Clubs || card.Suit == Suit.Spades) // Need to fix so that colors alternate ...Right now works good for testing
+            else if (card.Suit == Suit.Clubs || card.Suit == Suit.Spades)
             {
-                if (this.TopCard.Rank == card.Rank + 1)
+                if ((this.TopCard.Suit == Suit.Hearts || this.TopCard.Suit == Suit.Diamonds) && this.TopCard.Rank == card.Rank + 1)
                 {
                     return true;
                 }
@@ -64,13 +64,12 @@ namespace MonoGameCards
             }
             else
             {
-                if (this.TopCard.Rank == card.Rank + 1)
+                if ((this.TopCard.Suit == Suit.Clubs || this.TopCard.Suit == Suit.Spades) && this.TopCard.Rank == card.Rank + 1)
                 {
                     return true;
                 }
                 return false;
             }
         }
-
     }
 }
