@@ -41,9 +41,17 @@ namespace MonoGameCards
                 Cards = Cards.OrderBy(c => Guid.NewGuid()).ToList();
         }
 
-        public Card TakeCard()
+        public Card TakeTopCard()
         {
             var card = Cards.LastOrDefault(); // FirstOrDefault();
+            Cards.Remove(card);
+
+            return card;
+        }
+
+        public Card TakeBottomCard()
+        {
+            var card = Cards.FirstOrDefault();
             Cards.Remove(card);
 
             return card;

@@ -120,14 +120,14 @@ namespace MonoGameCards
 
                     for (int i = 0; i < cardCount; i++)
                     {
-                        DrawPile.AddCard(FaceUpPile.TakeCard());
+                        DrawPile.AddCard(FaceUpPile.TakeTopCard());
                         DrawPile.Cards[i].isFaceDown = true;
                     }
                 }
                 // Draw a Card from Draw Pile and place in Face Up Pile
                 if (!DrawPile.IsEmpty && DrawPile.TopCard.CardRectangle.Contains(mousePoint))
                 {
-                    Card c = DrawPile.TakeCard();
+                    Card c = DrawPile.TakeTopCard();
                     c.isFaceDown = false;
                     FaceUpPile.AddCard(c);
                 }
@@ -156,7 +156,7 @@ namespace MonoGameCards
                     {
                         cardOffset = mousePosition - FaceUpPile.TopCard.Position;
                         if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
-                            MyHand.AddFromDeck(FaceUpPile.TakeCard(), FaceUpPile);
+                            MyHand.AddFromDeck(FaceUpPile.TakeTopCard(), FaceUpPile);
                         dragging = true;
                     }
                     for (int p = 0; p < PlayPiles.Count; p++) // Looping through all PlayPiles
@@ -168,8 +168,8 @@ namespace MonoGameCards
                                 cardOffset = mousePosition - PlayPiles[p].TopCard.Position;
                                 for (int i = PlayPiles[p].Cards.Count - 1; i >= c; i--)
                                 {
-                                    MyHand.AddFromDeck(PlayPiles[p].TakeCard(), PlayPiles[p]);
-                                    Console.WriteLine("c = " + c + " && i = " + i);
+                                    MyHand.AddFromDeck(PlayPiles[p].TakeTopCard(), PlayPiles[p]);
+                                    Console.WriteLine("c = " + c + " && i = " + i);  // REMOVE ME 
                                 }
                                 MyHand.Cards.Reverse();
                                 //if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
@@ -204,7 +204,7 @@ namespace MonoGameCards
                         {
                             if (acePile.IsLegalAdd(MyHand.TopCard))
                             {
-                                acePile.AddCard(MyHand.TakeCard());
+                                acePile.AddCard(MyHand.TakeTopCard());
                                 break;
                             }
                         }
@@ -219,9 +219,12 @@ namespace MonoGameCards
                     {
                         if (playPile.TopCard.CardRectangle.Contains(cardCorner) || playPile.Rectangle.Contains(cardCorner))
                         {
-                            if (playPile.IsLegalAdd(MyHand.TopCard))
+                            if (playPile.IsLegalAdd(MyHand.Cards[0]))
                             {
-                                playPile.AddCard(MyHand.TakeCard());
+                                while (MyHand.IsEmpty == false)
+                                {
+                                    playPile.AddCard(MyHand.TakeBottomCard());
+                                }
                                 break;
                             }
                         }
@@ -229,7 +232,10 @@ namespace MonoGameCards
                 }
                 if (MyHand.IsEmpty == false)
                 {
-                    MyHand.LastDeck.AddCard(MyHand.TakeCard());
+                    while (MyHand.IsEmpty == false)
+                    {
+                        MyHand.LastDeck.AddCard(MyHand.TakeBottomCard());
+                    }
                 }
             }
             #endregion
@@ -287,14 +293,14 @@ namespace MonoGameCards
             {
                 for (int j = 0; i >= j; j++)
                 {
-                    PlayPiles[i].AddCard(deck.TakeCard());
+                    PlayPiles[i].AddCard(deck.TakeTopCard());
                 }
                 PlayPiles[i].Cards[i].isFaceDown = false;
             }
 
             for (int i = 0; deck.Cards.Count > 0; i++)
             {
-                Card c = deck.TakeCard();
+                Card c = deck.TakeTopCard();
                 DrawPile.AddCard(c);
             }
 
