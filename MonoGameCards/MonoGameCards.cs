@@ -49,7 +49,7 @@ namespace MonoGameCards
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            this.Window.Title = "Xna Solitaire";
+            this.Window.Title = "MonoGame Solitaire";
         }
 
         protected override void Initialize()
@@ -150,61 +150,35 @@ namespace MonoGameCards
                 {
                     MyHand.Update(mousePosition - cardOffset);
                 }
-                else if (FaceUpPile.TopCard.CardRectangle.Contains(mousePoint))
+                else
                 {
-                    cardOffset = mousePosition - FaceUpPile.TopCard.Position;
-                    if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
-                        MyHand.AddFromDeck(FaceUpPile.TakeCard(), FaceUpPile);
-                    dragging = true;
-                }
-                else if (PlayPiles[0].TopCard.CardRectangle.Contains(mousePoint))
-                {
-                    cardOffset = mousePosition - PlayPiles[0].TopCard.Position;
-                    if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
-                        MyHand.AddFromDeck(PlayPiles[0].TakeCard(), PlayPiles[0]);
-                    dragging = true;
-                }
-                else if (PlayPiles[1].TopCard.CardRectangle.Contains(mousePoint))
-                {
-                    cardOffset = mousePosition - PlayPiles[1].TopCard.Position;
-                    if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
-                        MyHand.AddFromDeck(PlayPiles[1].TakeCard(), PlayPiles[1]);
-                    dragging = true;
-                }
-                else if (PlayPiles[2].TopCard.CardRectangle.Contains(mousePoint))
-                {
-                    cardOffset = mousePosition - PlayPiles[2].TopCard.Position;
-                    if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
-                        MyHand.AddFromDeck(PlayPiles[2].TakeCard(), PlayPiles[2]);
-                    dragging = true;
-                }
-                else if (PlayPiles[3].TopCard.CardRectangle.Contains(mousePoint))
-                {
-                    cardOffset = mousePosition - PlayPiles[3].TopCard.Position;
-                    if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
-                        MyHand.AddFromDeck(PlayPiles[3].TakeCard(), PlayPiles[3]);
-                    dragging = true;
-                }
-                else if (PlayPiles[4].TopCard.CardRectangle.Contains(mousePoint))
-                {
-                    cardOffset = mousePosition - PlayPiles[4].TopCard.Position;
-                    if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
-                        MyHand.AddFromDeck(PlayPiles[4].TakeCard(), PlayPiles[4]);
-                    dragging = true;
-                }
-                else if (PlayPiles[5].TopCard.CardRectangle.Contains(mousePoint))
-                {
-                    cardOffset = mousePosition - PlayPiles[5].TopCard.Position;
-                    if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
-                        MyHand.AddFromDeck(PlayPiles[5].TakeCard(), PlayPiles[5]);
-                    dragging = true;
-                }
-                else if (PlayPiles[6].TopCard.CardRectangle.Contains(mousePoint))
-                {
-                    cardOffset = mousePosition - PlayPiles[6].TopCard.Position;
-                    if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
-                        MyHand.AddFromDeck(PlayPiles[6].TakeCard(), PlayPiles[6]);
-                    dragging = true;
+                    if (FaceUpPile.TopCard.CardRectangle.Contains(mousePoint))
+                    {
+                        cardOffset = mousePosition - FaceUpPile.TopCard.Position;
+                        if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
+                            MyHand.AddFromDeck(FaceUpPile.TakeCard(), FaceUpPile);
+                        dragging = true;
+                    }
+                    for (int p = 0; p < PlayPiles.Count; p++) // Looping through all PlayPiles
+                    {
+                        for (int c = PlayPiles[p].Cards.Count - 1; c >= 0; c--) // Looping through all Cards in each PlayPile starting at topmost and working backwards
+                        {
+                            if (PlayPiles[p].Cards[c].CardRectangle.Contains(mousePoint))
+                            {
+                                cardOffset = mousePosition - PlayPiles[p].TopCard.Position;
+                                for (int i = PlayPiles[p].Cards.Count - 1; i >= c; i--)
+                                {
+                                    MyHand.AddFromDeck(PlayPiles[p].TakeCard(), PlayPiles[p]);
+                                    Console.WriteLine("c = " + c + " && i = " + i);
+                                }
+                                MyHand.Cards.Reverse();
+                                //if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
+                                //    MyHand.AddFromDeck(PlayPiles[p].TakeCard(), PlayPiles[p]);
+                                dragging = true;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
             else
