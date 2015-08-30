@@ -30,8 +30,7 @@ namespace MonoGameCards
         {
             LastDeck = FromDeck;
             base.AddCard(card);
-            Console.WriteLine("================");
-            Console.WriteLine("Hand Count = " + this.Cards.Count); //REMOVE ME LATER
+
         }
     }
 }

@@ -728,3 +728,63 @@
 /processorParam:TextureFormat=Color
 /build:LocationBox.png
 
+#begin Sounds/cuckoo.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/cuckoo.wav
+
+#begin Sounds/draw.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/draw.wav
+
+#begin Sounds/error.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/error.wav
+
+#begin Sounds/Passturn.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Passturn.wav
+
+#begin Sounds/playcard.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/playcard.wav
+
+#begin Sounds/rolldie.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/rolldie.wav
+
+#begin Sounds/shuffle.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/shuffle.wav
+
+#begin Sounds/stagechangeoldnotification.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/stagechangeoldnotification.wav
+
+#begin Sounds/tap.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/tap.wav
+
+#begin Sounds/untap.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/untap.wav
+

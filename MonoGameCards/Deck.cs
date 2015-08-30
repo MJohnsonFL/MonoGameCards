@@ -43,7 +43,7 @@ namespace MonoGameCards
 
         public Card TakeTopCard()
         {
-            var card = Cards.LastOrDefault(); // FirstOrDefault();
+            var card = Cards.LastOrDefault();
             Cards.Remove(card);
 
             return card;

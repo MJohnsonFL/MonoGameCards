@@ -43,6 +43,8 @@ namespace MonoGameCards
         Vector2 mousePosition;
         Vector2 cardOffset;
 
+        Sound sound = new Sound();
+
         bool dragging = false;
 
         public MonoGameCards()
@@ -79,6 +81,8 @@ namespace MonoGameCards
                 playPile.LoadContent(Content);
 
             SetupNewSolitaireGame();
+
+            sound.LoadContent(Content);
         }
 
         protected override void UnloadContent()
@@ -123,6 +127,7 @@ namespace MonoGameCards
                         DrawPile.AddCard(FaceUpPile.TakeTopCard());
                         DrawPile.Cards[i].isFaceDown = true;
                     }
+                    sound.Shuffle();
                 }
                 // Draw a Card from Draw Pile and place in Face Up Pile
                 if (!DrawPile.IsEmpty && DrawPile.TopCard.CardRectangle.Contains(mousePoint))
@@ -130,6 +135,7 @@ namespace MonoGameCards
                     Card c = DrawPile.TakeTopCard();
                     c.isFaceDown = false;
                     FaceUpPile.AddCard(c);
+                    sound.Draw();
                 }
                 // Play Piles
                 foreach (PlayPile playPile in PlayPiles)
@@ -159,21 +165,18 @@ namespace MonoGameCards
                             MyHand.AddFromDeck(FaceUpPile.TakeTopCard(), FaceUpPile);
                         dragging = true;
                     }
-                    for (int p = 0; p < PlayPiles.Count; p++) // Looping through all PlayPiles
+                    for (int ppindex = 0; ppindex < PlayPiles.Count; ppindex++) // Looping through all PlayPiles
                     {
-                        for (int c = PlayPiles[p].Cards.Count - 1; c >= 0; c--) // Looping through all Cards in each PlayPile starting at topmost and working backwards
+                        for (int cardindex = PlayPiles[ppindex].Cards.Count - 1; cardindex >= 0; cardindex--) // Looping through all Cards in each PlayPile starting at topmost and working backwards
                         {
-                            if (PlayPiles[p].Cards[c].isFaceDown == false && PlayPiles[p].Cards[c].CardRectangle.Contains(mousePoint))
+                            if (PlayPiles[ppindex].Cards[cardindex].isFaceDown == false && PlayPiles[ppindex].Cards[cardindex].CardRectangle.Contains(mousePoint))
                             {
-                                cardOffset = mousePosition - PlayPiles[p].Cards[c].Position;
-                                for (int i = PlayPiles[p].Cards.Count - 1; i >= c; i--)
+                                cardOffset = mousePosition - PlayPiles[ppindex].Cards[cardindex].Position;
+                                for (int i = PlayPiles[ppindex].Cards.Count - 1; i >= cardindex; i--)
                                 {
-                                    MyHand.AddFromDeck(PlayPiles[p].TakeTopCard(), PlayPiles[p]);
-                                    Console.WriteLine("c = " + c + " && i = " + i);  // REMOVE ME 
+                                    MyHand.AddFromDeck(PlayPiles[ppindex].TakeTopCard(), PlayPiles[ppindex]);
                                 }
                                 MyHand.Cards.Reverse();
-                                //if (MyHand.Cards.Count < 1) // TEMP For Testing.........Remove Later
-                                //    MyHand.AddFromDeck(PlayPiles[p].TakeCard(), PlayPiles[p]);
                                 dragging = true;
                                 break;
                             }
@@ -200,13 +203,14 @@ namespace MonoGameCards
                     foreach (AcePile acePile in AcePiles)
                     {
                         if (acePile.TopCard.CardRectangle.Contains(cardCorner) || acePile.Rectangle.Contains(cardCorner))
-                        //if (acePile.Rectangle.Contains(cardCorner))
                         {
                             if (acePile.IsLegalAdd(MyHand.TopCard))
                             {
                                 acePile.AddCard(MyHand.TakeTopCard());
+                                sound.Success();
                                 break;
                             }
+                            else sound.Error();
                         }
                     }
                 }
@@ -217,7 +221,8 @@ namespace MonoGameCards
 
                     foreach (PlayPile playPile in PlayPiles)
                     {
-                        if (playPile.TopCard.CardRectangle.Contains(cardCorner) || playPile.Rectangle.Contains(cardCorner))
+                        if ((playPile.TopCard.CardRectangle.Contains(cardCorner) || playPile.Rectangle.Contains(cardCorner))
+                            && !(MyHand.LastDeck == playPile))
                         {
                             if (playPile.IsLegalAdd(MyHand.Cards[0]))
                             {
@@ -225,8 +230,10 @@ namespace MonoGameCards
                                 {
                                     playPile.AddCard(MyHand.TakeBottomCard());
                                 }
+                                sound.PlayCard();
                                 break;
                             }
+                            else sound.Error();
                         }
                     }
                 }
@@ -303,6 +310,8 @@ namespace MonoGameCards
                 Card c = deck.TakeTopCard();
                 DrawPile.AddCard(c);
             }
+
+            //sound.Shuffle();
 
         }
 
